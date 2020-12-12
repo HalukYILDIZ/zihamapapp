@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "302815205710",
+    "firebase_url": "https://zihatim-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "zihatim",
+    "storage_bucket": "zihatim.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302815205710:android:556a005a462cc81c21a61f",
+        "android_client_info": {
+          "package_name": "com.zihatim.zihamapapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302815205710-31ds459ef5sf76v53pufgs51d3k5t52h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6rGGQNGiyDOfWGtqq8rfsMkC9kTSE8Gs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302815205710-31ds459ef5sf76v53pufgs51d3k5t52h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

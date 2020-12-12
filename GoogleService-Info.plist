@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>302815205710-0qiok0th7e9gk7ikefj6ocia12sdri02.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.302815205710-0qiok0th7e9gk7ikefj6ocia12sdri02</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAMrwr6uMdUx1A1Tqozuc2Oq_nmygImMIU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>302815205710</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.zihatim.zihamapapp</string>
+	<key>PROJECT_ID</key>
+	<string>zihatim</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zihatim.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:302815205710:ios:ef1c8b51b29236d221a61f</string>
+	<key>DATABASE_URL</key>
+	<string>https://zihatim-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>

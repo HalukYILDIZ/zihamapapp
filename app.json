@@ -17,13 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.zihatim.zihatimapp",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.zihatim.zihatimapp",
+      "googleServicesFile": "./google-services.json"
+    
     },
     "web": {
       "favicon": "./assets/favicon.png"
