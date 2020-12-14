@@ -37,11 +37,14 @@ const Item = ({ zeminId }) => (
 
 export default function etkinlikEkrani({ route, navigation }) {
   const [loading, setLoading] = useState(false);
-  const [tarih, setTarih] = useState("01-01-2020");
+  const [tarih, setTarih] = useState("01-01-2021");
   const [saat, setSaat] = useState("08.00-10.00");
   const [islem, setIslem] = useState("ilaçlama");
   const [alan, setAlan] = useState("");
   const [plan, setPlan] = useState("Planlandı");
+  const [medya, setMedya] = useState(
+    "https://www.youtube.com/watch?v=94425VHLPFk"
+  );
 
   const renderItem = ({ item }) => <Item zeminId={item.zeminId} />;
 
@@ -50,15 +53,10 @@ export default function etkinlikEkrani({ route, navigation }) {
       .collection("tarla")
       .doc(`${zeminId}`)
       .collection("etkinlik")
-      .doc(tarih)
+      .doc(`${zeminId}-${tarih}-${saat}`)
       .set(data)
       .then(function () {
         Alert.alert("Başarılı", "Etkinlik kaydı başarıyla gerçekleşti.");
-        setTarih("01/01/2020");
-        setSaat("08:00-10:00");
-        setIslem("ilaçlama");
-        setAlan(0);
-        setPlan("planlandı");
         console.log("Document successfully written!");
       })
       .catch(function (error) {
@@ -139,16 +137,25 @@ export default function etkinlikEkrani({ route, navigation }) {
           onChangeText={setPlan}
           keyboardType="default"
         />
+        <TextInput
+          style={styles.input}
+          placeholder="medya"
+          value={medya}
+          onChangeText={setMedya}
+          keyboardType="default"
+        />
         <View style={styles.button}>
           <Button
             title="Etkinlik Ekle"
             onPress={() =>
               eklentiYaz(route.params.zeminId, {
+                id: `${route.params.zeminId}-${tarih}-${saat}`,
                 tarih: tarih,
                 saat: saat,
                 islem: islem,
                 ilaclananalan: alan,
                 plan: plan,
+                medya: medya,
               })
             }
           />
