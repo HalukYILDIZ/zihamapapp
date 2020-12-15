@@ -13,16 +13,7 @@ import {
   Alert,
 } from "react-native";
 import firebase from "../firebase/index";
-import { YellowBox } from "react-native";
-import _ from "lodash";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = (message) => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 const { width, height } = Dimensions.get("window");
 const Item = ({ zeminId }) => (
   <TouchableOpacity
@@ -36,14 +27,25 @@ const Item = ({ zeminId }) => (
 );
 
 export default function etkinlikEkrani({ route, navigation }) {
+  const etkinlik = route.params.etkinlikItem;
   const [loading, setLoading] = useState(false);
-  const [tarih, setTarih] = useState("01-01-2021");
-  const [saat, setSaat] = useState("08.00-10.00");
-  const [islem, setIslem] = useState("ilaçlama");
-  const [alan, setAlan] = useState("");
-  const [plan, setPlan] = useState("Planlandı");
+  const [tarih, setTarih] = useState(
+    etkinlik.tarih ? etkinlik.tarih : "01-01-2021"
+  );
+  const [saat, setSaat] = useState(
+    etkinlik.saat ? etkinlik.saat : "08.00-10.00"
+  );
+  const [islem, setIslem] = useState(
+    etkinlik.islem ? etkinlik.islem : "ilaçlama"
+  );
+  const [alan, setAlan] = useState(
+    etkinlik.ilaclananalan ? etkinlik.ilaclananalan : ""
+  );
+  const [plan, setPlan] = useState(etkinlik.plan ? etkinlik.plan : "Planlandı");
   const [medya, setMedya] = useState(
-    "https://www.youtube.com/watch?v=94425VHLPFk"
+    etkinlik.medya
+      ? etkinlik.medya
+      : "https://www.youtube.com/watch?v=94425VHLPFk"
   );
 
   const renderItem = ({ item }) => <Item zeminId={item.zeminId} />;

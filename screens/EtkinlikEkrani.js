@@ -11,15 +11,20 @@ import {
 } from "react-native";
 import firebase from "../firebase/index";
 
-export default function etkinlikEkrani({ navigation }) {
-  const Item = ({ zeminId }) => (
+export default function etkinlikEkrani({ route, navigation }) {
+  const Item = ({ item }) => (
     <TouchableOpacity
-      key={zeminId}
-      onPress={() => navigation.navigate("EtkinlikDetay", { zeminId: zeminId })}
+      key={item.id}
+      onPress={() =>
+        navigation.navigate("EtkinlikDetay", {
+          etkinlikItem: item,
+          zeminId: route.params.zeminId,
+        })
+      }
     >
-      <View style={styles.item} key={zeminId}>
-        <Text key={zeminId} style={styles.title}>
-          {zeminId}
+      <View style={styles.item} key={item.id}>
+        <Text key={item.id} style={styles.title}>
+          r{item.id}
         </Text>
       </View>
     </TouchableOpacity>
@@ -28,12 +33,13 @@ export default function etkinlikEkrani({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [tableDatas, setTableDatas] = useState(false);
 
-  const renderItem = ({ item }) => (
-    <Item key={item.zeminId} zeminId={item.zeminId} />
-  );
+  const renderItem = ({ item }) => <Item key={item.id} item={item} />;
 
   useEffect(() => {
-    const ref = firebase.db.collection("tarla");
+    const ref = firebase.db
+      .collection("tarla")
+      .doc(`${route.params.zeminId}`)
+      .collection("etkinlik");
     const getTableDatas = () => {
       setLoading(true);
       ref.onSnapshot((querySnapshot) => {
@@ -63,7 +69,7 @@ export default function etkinlikEkrani({ navigation }) {
       <FlatList
         data={tableDatas}
         renderItem={renderItem}
-        keyExtractor={(item) => item.pafta}
+        keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
   );
