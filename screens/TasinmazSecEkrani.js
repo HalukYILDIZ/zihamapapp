@@ -8,60 +8,68 @@ import {
   StatusBar,
   ActivityIndicator,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import firebase from "../firebase/index";
 
-//import CardItem from "../components/CardItem";
-
 export default function TasinmazSecEkrani({ navigation }) {
   const Item = ({ zeminId, item }) => (
-    // <TouchableOpacity
-    //   key={zeminId}
-    //   onPress={() => navigation.navigate("Etkinlik", { zeminId: zeminId })}
-    // >
-    //   <View style={styles.item}>
-    //     <Text style={styles.title}>{zeminId}</Text>
-    //   </View>
-    // </TouchableOpacity>
-    <View style={styles.screen}>
-      <View style={styles.summary}>
-        <View style={styles.summaryAlt}>
-          <View style={styles.elements}>
-            <Text style={styles.summaryText}>
-              Id: <Text style={styles.amount}>{item.zeminId}</Text>
-            </Text>
+    <TouchableOpacity
+      key={zeminId}
+      onPress={() => navigation.navigate("Etkinlik Sec", { zeminId: zeminId })}
+    >
+      <View style={styles.screen}>
+        <View style={styles.summary}>
+          <View style={styles.summaryUst}>
+            <View style={styles.summaryAlt}>
+              <View style={styles.elements}>
+                <Text style={styles.summaryText}>
+                  Id: <Text style={styles.id}>{item.zeminId}</Text>
+                </Text>
+              </View>
+              <Text style={styles.summaryText}>
+                İlçe: <Text style={styles.amount}>{item.ilceAd}</Text>
+              </Text>
+              <Text style={styles.summaryText}>
+                Mahalle: <Text style={styles.amount}>{item.mahalleAd}</Text>
+              </Text>
+            </View>
+            <View style={styles.summaryAlt}>
+              <View style={styles.elements}>
+                <Text style={styles.summaryText}>
+                  Ada: <Text style={styles.amount}>{item.adaNo}</Text>
+                </Text>
+              </View>
+              <Text style={styles.summaryText}>
+                Parsel: <Text style={styles.amount}>{item.parselNo}</Text>
+              </Text>
+              <Text style={styles.summaryText}>
+                Pafta: <Text style={styles.amount}>{item.pafta}</Text>
+              </Text>
+            </View>
           </View>
-          <Text style={styles.summaryText}>
-            İlçe: <Text style={styles.amount}>{item.ilceAd}</Text>
-          </Text>
-          <Text style={styles.summaryText}>
-            Mahalle: <Text style={styles.amount}>{item.mahalleAd}</Text>
-          </Text>
-        </View>
-        <View style={styles.summaryAlt}>
-          <View style={styles.elements}>
-            <Text style={styles.summaryText}>
-              Ada: <Text style={styles.amount}>{item.adaNo}</Text>
-            </Text>
+          <View style={styles.altsummaryUst}>
+            <View style={styles.summaryAlt}>
+              <View style={styles.elements}>
+                <Text style={styles.summaryText}>
+                  Taşınmaz Sahibi:
+                  <Text style={styles.amount}>{item.tasinmazsahibi}</Text>
+                </Text>
+              </View>
+              <Text style={styles.summaryText}>
+                Telefon: <Text style={styles.amount}>{item.telefon}</Text>
+              </Text>
+              <Text style={styles.summaryText}>
+                Açıklama: <Text style={styles.amount}>{item.aciklama}</Text>
+              </Text>
+              <Text style={styles.summaryText}>
+                Alan: <Text style={styles.amount}>{item.alan}m2</Text>
+              </Text>
+            </View>
           </View>
-          <Text style={styles.summaryText}>
-            Parsel: <Text style={styles.amount}>{item.parselNo}</Text>
-          </Text>
-          <Text style={styles.summaryText}>
-            Alan: <Text style={styles.amount}>{item.alan}m2</Text>
-          </Text>
-        </View>
-        <View>
-          <Button
-            color="red"
-            title="Seç"
-            onPress={() =>
-              navigation.navigate("Etkinlik", { zeminId: zeminId })
-            }
-          />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const [loading, setLoading] = useState(false);
@@ -133,10 +141,22 @@ const styles = StyleSheet.create({
   },
   summaryAlt: {
     flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  summaryUst: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "space-between",
+    padding: 4,
+  },
+  altsummaryUst: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-start",
   },
   summary: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
+    // alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
     padding: 10,
@@ -149,11 +169,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   summaryText: {
-    fontSize: 14,
+    fontSize: 16,
     flexDirection: "column",
+    fontWeight: "bold",
   },
   amount: {
-    color: "blue",
+    color: "grey",
+    fontSize: 16,
+    fontStyle: "italic",
+  },
+  id: {
+    color: "red",
+    fontSize: 16,
+    fontStyle: "italic",
   },
   elemenets: {
     flex: 1,

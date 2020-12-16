@@ -7,36 +7,19 @@ import {
   Text,
   StatusBar,
   ActivityIndicator,
-  TouchableOpacity,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import firebase from "../firebase/index";
 
-export default function etkinlikEkrani({ route, navigation }) {
-  // const Item = ({ item }) => (
-  //   <TouchableOpacity
-  //     key={item.id}
-  //     onPress={() =>
-  //       navigation.navigate("Etkinlik Detay", {
-  //         etkinlikItem: item,
-  //         zeminId: route.params.zeminId,
-  //       })
-  //     }
-  //   >
-  //     <View style={styles.item} key={item.id}>
-  //       <Text key={item.id} style={styles.title}>
-  //         {item.id}
-  //       </Text>
-  //     </View>
-  //   </TouchableOpacity>
-  // );
-  const Item = ({ item }) => (
+export default function TasinmazGuncelleEkrani({ navigation }) {
+  const Item = ({ zeminId, item }) => (
     <TouchableOpacity
-      key={item}
+      key={zeminId}
       onPress={() =>
-        navigation.navigate("Etkinlik Detay", {
-          zeminId: route.params.zeminId,
-          etkinlikItem: item,
+        navigation.navigate("Tasınmaz Ekle", {
+          zeminId: zeminId,
+          item: item,
         })
       }
     >
@@ -46,23 +29,27 @@ export default function etkinlikEkrani({ route, navigation }) {
             <View style={styles.summaryAlt}>
               <View style={styles.elements}>
                 <Text style={styles.summaryText}>
-                  Tarih: <Text style={styles.id}>{item.tarih}</Text>
+                  Id: <Text style={styles.id}>{item.zeminId}</Text>
                 </Text>
               </View>
-
               <Text style={styles.summaryText}>
-                Saat: <Text style={styles.amount}>{item.saat}</Text>
+                İlçe: <Text style={styles.amount}>{item.ilceAd}</Text>
+              </Text>
+              <Text style={styles.summaryText}>
+                Mahalle: <Text style={styles.amount}>{item.mahalleAd}</Text>
               </Text>
             </View>
             <View style={styles.summaryAlt}>
               <View style={styles.elements}>
                 <Text style={styles.summaryText}>
-                  İşlem: <Text style={styles.amount}>{item.islem}</Text>
+                  Ada: <Text style={styles.amount}>{item.adaNo}</Text>
                 </Text>
               </View>
               <Text style={styles.summaryText}>
-                Alan:
-                <Text style={styles.amount}>{item.ilaclananalan}m2</Text>
+                Parsel: <Text style={styles.amount}>{item.parselNo}</Text>
+              </Text>
+              <Text style={styles.summaryText}>
+                Pafta: <Text style={styles.amount}>{item.pafta}</Text>
               </Text>
             </View>
           </View>
@@ -70,20 +57,18 @@ export default function etkinlikEkrani({ route, navigation }) {
             <View style={styles.summaryAlt}>
               <View style={styles.elements}>
                 <Text style={styles.summaryText}>
-                  Id:
-                  <Text style={styles.amount}>{item.id}</Text>
+                  Taşınmaz Sahibi:
+                  <Text style={styles.amount}>{item.tasinmazsahibi}</Text>
                 </Text>
               </View>
               <Text style={styles.summaryText}>
-                Medya:
-                <Text style={styles.amount}>{item.medya ? "var" : "yok"}</Text>
+                Telefon: <Text style={styles.amount}>{item.telefon}</Text>
               </Text>
               <Text style={styles.summaryText}>
-                işlem: <Text style={styles.amount}>{item.islem}</Text>
+                Açıklama: <Text style={styles.amount}>{item.aciklama}</Text>
               </Text>
               <Text style={styles.summaryText}>
-                planlandı/tamamlandı:
-                <Text style={styles.amount}>{item.plan}</Text>
+                Alan: <Text style={styles.amount}>{item.alan}m2</Text>
               </Text>
             </View>
           </View>
@@ -95,13 +80,12 @@ export default function etkinlikEkrani({ route, navigation }) {
   const [loading, setLoading] = useState(false);
   const [tableDatas, setTableDatas] = useState(false);
 
-  const renderItem = ({ item }) => <Item key={item.id} item={item} />;
+  const renderItem = ({ item }) => (
+    <Item key={item.zeminId} zeminId={item.zeminId} item={item} />
+  );
 
   useEffect(() => {
-    const ref = firebase.db
-      .collection("tarla")
-      .doc(`${route.params.zeminId}`)
-      .collection("etkinlik");
+    const ref = firebase.db.collection("tarla");
     const getTableDatas = () => {
       setLoading(true);
       ref.onSnapshot((querySnapshot) => {
@@ -125,21 +109,10 @@ export default function etkinlikEkrani({ route, navigation }) {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.button}>
-        <Button
-          title="Yeni Etkinlik Ekle"
-          color="red"
-          onPress={() =>
-            navigation.navigate("Etkinlik Detay", {
-              zeminId: route.params.zeminId,
-            })
-          }
-        />
-      </View>
       <FlatList
         data={tableDatas}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.pafta}
       />
     </SafeAreaView>
   );
@@ -166,18 +139,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     padding: 10,
-  },
-  button: {
-    paddingHorizontal: 5,
-    margin: 10,
-
-    shadowColor: "black",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: "white",
   },
   screen: {
     marginHorizontal: 10,

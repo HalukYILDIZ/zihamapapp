@@ -15,37 +15,27 @@ import {
 import firebase from "../firebase/index";
 
 const { width, height } = Dimensions.get("window");
-const Item = ({ zeminId }) => (
-  <TouchableOpacity
-    key={zeminId}
-    onPress={() => navigation.navigate("EtkinlikDetay", { zeminId: zeminId })}
-  >
-    <View style={styles.item}>
-      <Text style={styles.title}>{zeminId}</Text>
-    </View>
-  </TouchableOpacity>
-);
+// const Item = ({ zeminId }) => (
+//   <TouchableOpacity
+//     key={zeminId}
+//     onPress={() => navigation.navigate("EtkinlikDetay", { zeminId: zeminId })}
+//   >
+//     <View style={styles.item}>
+//       <Text style={styles.title}>{zeminId}</Text>
+//     </View>
+//   </TouchableOpacity>
+// );
 
-export default function etkinlikEkrani({ route, navigation }) {
+export default function etkinlikEkrani({ route }) {
   const etkinlik = route.params.etkinlikItem;
   const [loading, setLoading] = useState(false);
-  const [tarih, setTarih] = useState(
-    etkinlik.tarih ? etkinlik.tarih : "01-01-2021"
-  );
-  const [saat, setSaat] = useState(
-    etkinlik.saat ? etkinlik.saat : "08.00-10.00"
-  );
-  const [islem, setIslem] = useState(
-    etkinlik.islem ? etkinlik.islem : "ilaçlama"
-  );
-  const [alan, setAlan] = useState(
-    etkinlik.ilaclananalan ? etkinlik.ilaclananalan : ""
-  );
-  const [plan, setPlan] = useState(etkinlik.plan ? etkinlik.plan : "Planlandı");
+  const [tarih, setTarih] = useState(etkinlik ? etkinlik.tarih : "01-01-2021");
+  const [saat, setSaat] = useState(etkinlik ? etkinlik.saat : "08.00-10.00");
+  const [islem, setIslem] = useState(etkinlik ? etkinlik.islem : "ilaçlama");
+  const [alan, setAlan] = useState(etkinlik ? etkinlik.ilaclananalan : "");
+  const [plan, setPlan] = useState(etkinlik ? etkinlik.plan : "Planlandı");
   const [medya, setMedya] = useState(
-    etkinlik.medya
-      ? etkinlik.medya
-      : "https://www.youtube.com/watch?v=94425VHLPFk"
+    etkinlik ? etkinlik.medya : "https://www.youtube.com/watch?v=94425VHLPFk"
   );
 
   const renderItem = ({ item }) => <Item zeminId={item.zeminId} />;
@@ -55,7 +45,7 @@ export default function etkinlikEkrani({ route, navigation }) {
       .collection("tarla")
       .doc(`${zeminId}`)
       .collection("etkinlik")
-      .doc(`${zeminId}-${tarih}-${saat}`)
+      .doc(`${tarih}-${saat}-${zeminId}`)
       .set(data)
       .then(function () {
         Alert.alert("Başarılı", "Etkinlik kaydı başarıyla gerçekleşti.");
@@ -65,24 +55,6 @@ export default function etkinlikEkrani({ route, navigation }) {
         console.error("Error writing document: ", error);
       });
   };
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   let snapshot = firebase.db
-  //     .collection("tarla")
-  //     .doc(`${route.params.zeminId}`)
-  //     .collection("coordinates")
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         console.log(doc.id, " => ", doc.data());
-  //         console.log("******************************************");
-  //       });
-  //     });
-
-  //   //setTableDatas(items);
-  //   setLoading(false);
-  // }, []);
 
   if (loading) {
     return (
@@ -151,7 +123,7 @@ export default function etkinlikEkrani({ route, navigation }) {
             title="Etkinlik Ekle"
             onPress={() =>
               eklentiYaz(route.params.zeminId, {
-                id: `${route.params.zeminId}-${tarih}-${saat}`,
+                id: `${tarih}-${saat}-${route.params.zeminId}`,
                 tarih: tarih,
                 saat: saat,
                 islem: islem,

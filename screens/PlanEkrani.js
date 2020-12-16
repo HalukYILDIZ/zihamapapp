@@ -12,84 +12,62 @@ import {
 } from "react-native";
 import firebase from "../firebase/index";
 
-export default function etkinlikEkrani({ route, navigation }) {
-  // const Item = ({ item }) => (
-  //   <TouchableOpacity
-  //     key={item.id}
-  //     onPress={() =>
-  //       navigation.navigate("Etkinlik Detay", {
-  //         etkinlikItem: item,
-  //         zeminId: route.params.zeminId,
-  //       })
-  //     }
-  //   >
-  //     <View style={styles.item} key={item.id}>
-  //       <Text key={item.id} style={styles.title}>
-  //         {item.id}
-  //       </Text>
-  //     </View>
-  //   </TouchableOpacity>
-  // );
+export default function PlanEkrani() {
   const Item = ({ item }) => (
-    <TouchableOpacity
-      key={item}
-      onPress={() =>
-        navigation.navigate("Etkinlik Detay", {
-          zeminId: route.params.zeminId,
-          etkinlikItem: item,
-        })
-      }
-    >
-      <View style={styles.screen}>
-        <View style={styles.summary}>
-          <View style={styles.summaryUst}>
-            <View style={styles.summaryAlt}>
-              <View style={styles.elements}>
-                <Text style={styles.summaryText}>
-                  Tarih: <Text style={styles.id}>{item.tarih}</Text>
-                </Text>
-              </View>
+    <View style={styles.screen}>
+      <View
+        style={{
+          ...styles.summary,
+          backgroundColor: item.plan == "Tamamlandı" ? "pink" : "white",
+        }}
+      >
+        <View style={styles.summaryUst}>
+          <View style={styles.summaryAlt}>
+            <View style={styles.elements}>
+              <Text style={styles.summaryText}>
+                Tarih: <Text style={styles.id}>{item.tarih}</Text>
+              </Text>
+            </View>
 
-              <Text style={styles.summaryText}>
-                Saat: <Text style={styles.amount}>{item.saat}</Text>
-              </Text>
-            </View>
-            <View style={styles.summaryAlt}>
-              <View style={styles.elements}>
-                <Text style={styles.summaryText}>
-                  İşlem: <Text style={styles.amount}>{item.islem}</Text>
-                </Text>
-              </View>
-              <Text style={styles.summaryText}>
-                Alan:
-                <Text style={styles.amount}>{item.ilaclananalan}m2</Text>
-              </Text>
-            </View>
+            <Text style={styles.summaryText}>
+              Saat: <Text style={styles.amount}>{item.saat}</Text>
+            </Text>
           </View>
-          <View style={styles.altsummaryUst}>
-            <View style={styles.summaryAlt}>
-              <View style={styles.elements}>
-                <Text style={styles.summaryText}>
-                  Id:
-                  <Text style={styles.amount}>{item.id}</Text>
-                </Text>
-              </View>
+          <View style={styles.summaryAlt}>
+            <View style={styles.elements}>
               <Text style={styles.summaryText}>
-                Medya:
-                <Text style={styles.amount}>{item.medya ? "var" : "yok"}</Text>
-              </Text>
-              <Text style={styles.summaryText}>
-                işlem: <Text style={styles.amount}>{item.islem}</Text>
-              </Text>
-              <Text style={styles.summaryText}>
-                planlandı/tamamlandı:
-                <Text style={styles.amount}>{item.plan}</Text>
+                İşlem: <Text style={styles.amount}>{item.islem}</Text>
               </Text>
             </View>
+            <Text style={styles.summaryText}>
+              Alan:
+              <Text style={styles.amount}>{item.ilaclananalan}m2</Text>
+            </Text>
+          </View>
+        </View>
+        <View style={styles.altsummaryUst}>
+          <View style={styles.summaryAlt}>
+            <View style={styles.elements}>
+              <Text style={styles.summaryText}>
+                Id:
+                <Text style={styles.amount}>{item.id}</Text>
+              </Text>
+            </View>
+            <Text style={styles.summaryText}>
+              Medya:
+              <Text style={styles.amount}>{item.medya ? "var" : "yok"}</Text>
+            </Text>
+            <Text style={styles.summaryText}>
+              işlem: <Text style={styles.amount}>{item.islem}</Text>
+            </Text>
+            <Text style={styles.summaryText}>
+              planlandı/tamamlandı:
+              <Text style={styles.amount}>{item.plan}</Text>
+            </Text>
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   const [loading, setLoading] = useState(false);
@@ -98,10 +76,7 @@ export default function etkinlikEkrani({ route, navigation }) {
   const renderItem = ({ item }) => <Item key={item.id} item={item} />;
 
   useEffect(() => {
-    const ref = firebase.db
-      .collection("tarla")
-      .doc(`${route.params.zeminId}`)
-      .collection("etkinlik");
+    const ref = firebase.db.collectionGroup("etkinlik").orderBy("plan");
     const getTableDatas = () => {
       setLoading(true);
       ref.onSnapshot((querySnapshot) => {
@@ -125,17 +100,6 @@ export default function etkinlikEkrani({ route, navigation }) {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.button}>
-        <Button
-          title="Yeni Etkinlik Ekle"
-          color="red"
-          onPress={() =>
-            navigation.navigate("Etkinlik Detay", {
-              zeminId: route.params.zeminId,
-            })
-          }
-        />
-      </View>
       <FlatList
         data={tableDatas}
         renderItem={renderItem}

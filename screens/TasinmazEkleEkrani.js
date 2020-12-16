@@ -1,7 +1,7 @@
 // @refresh reset
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+//import { createStackNavigator } from "@react-navigation/stack";
 import {
   StyleSheet,
   TextInput,
@@ -10,49 +10,23 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
-import firebase from "./firebase/index";
+import firebase from "../firebase/index";
 //import * as firebase from "firebase";
 //import "firebase/firestore";
-import Auth from "./screens/AuthScreen";
+import Auth from "./AuthScreen";
 
-const Stack = createStackNavigator();
+//const Stack = createStackNavigator();
 
 const { width, height } = Dimensions.get("window");
 
-export default function Home() {
-  const [sahip, setSahip] = useState("");
-  const [aciklama, setAciklama] = useState("");
-  const [id, setId] = useState("");
-  const [tel, setTel] = useState("");
+export default function TasinmazEkleEkrani({ route }) {
+  const zeminId = route.params.zeminId ? route.params.zeminId : null;
+  const tasinmaz = route.params.item ? route.params.item : null;
 
-  //   useEffect(() => {
-  //     var firebaseConfig = {
-  //       apiKey: "AIzaSyAAJcxKjP0D3v7cOwTKhZr_o9fl1PIotJk",
-  //       authDomain: "zihatim.firebaseapp.com",
-  //       databaseURL:
-  //         "https://zihatim-default-rtdb.europe-west1.firebasedatabase.app",
-  //       projectId: "zihatim",
-  //       storageBucket: "zihatim.appspot.com",
-  //       messagingSenderId: "302815205710",
-  //       appId: "1:302815205710:web:ee4b946cb97cdef721a61f",
-  //       measurementId: "G-M8B1QJ9DN6",
-  //     };
-  //     if (!firebase.apps.length) {
-  //       firebase.initializeApp(firebaseConfig);
-  //     } else {
-  //       firebase.app(); // if already initialized, use that one
-  //     }
-  //     dbh = firebase.firestore();
-
-  //     firebase.auth().onAuthStateChanged((auth) => {
-  //       if (auth) {
-  //         console.log("girildi");
-  //       } else {
-  //         console.log("auth sağlanamadı");
-  //         return <Auth />;
-  //       }
-  //     });
-  //   }, []);
+  const [sahip, setSahip] = useState(tasinmaz ? tasinmaz.tasinmazsahibi : "");
+  const [aciklama, setAciklama] = useState(tasinmaz ? tasinmaz.aciklama : "");
+  const [id, setId] = useState(tasinmaz ? `${tasinmaz.zeminId}` : "");
+  const [tel, setTel] = useState(tasinmaz ? tasinmaz.telefon : "");
 
   const veriekle = (id, veri) => {
     eklenmisVeri = {
@@ -67,10 +41,6 @@ export default function Home() {
       .set(eklenmisVeri)
       .then(function () {
         Alert.alert("Başarılı", "Taşınmaz kaydı başarıyla gerçekleşti.");
-        setAciklama("");
-        setTel("");
-        setId("");
-        setSahip("");
         console.log("Document successfully written!");
       })
       .catch(function (error) {
@@ -129,7 +99,7 @@ export default function Home() {
         keyboardType="numeric"
       />
       <View style={styles.button}>
-        <Button title="Taşınmaz No Ekle" onPress={() => getApi(id)} />
+        <Button title="Taşınmaz Ekle" onPress={() => getApi(id)} />
       </View>
 
       <StatusBar style="auto" />
