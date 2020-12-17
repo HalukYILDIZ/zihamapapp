@@ -21,6 +21,7 @@ export default function etkinlikEkrani({ route, navigation }) {
           zeminId: route.params.zeminId,
           etkinlikId: item.id,
           etkinlikItem: item,
+          coordinates: route.params.coordinates,
         })
       }
     >
@@ -116,6 +117,7 @@ export default function etkinlikEkrani({ route, navigation }) {
           onPress={() =>
             navigation.navigate("Etkinlik Detay", {
               zeminId: route.params.zeminId,
+              coordinates: route.params.coordinates,
             })
           }
         />

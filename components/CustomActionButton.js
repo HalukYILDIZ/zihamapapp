@@ -35,7 +35,7 @@ const CustomActionButton = (props) => {
           title="Arazi"
           onPress={props.onStop}
         >
-          <Entypo name="controller-stop" style={styles.actionButtonIcon} />
+          <Entypo name="map" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       )}
       {props.withOption && (
@@ -44,7 +44,7 @@ const CustomActionButton = (props) => {
           title="Uydu"
           onPress={props.onPause}
         >
-          <Entypo name="controller-paus" style={styles.actionButtonIcon} />
+          <Entypo name="map" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       )}
       {props.withOption && (
@@ -53,7 +53,7 @@ const CustomActionButton = (props) => {
           title="Etiketli Uydu"
           onPress={props.onPlay}
         >
-          <Entypo name="controller-play" style={styles.actionButtonIcon} />
+          <Entypo name="map" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       )}
     </ActionButton>

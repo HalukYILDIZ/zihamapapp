@@ -20,10 +20,6 @@ export default function HaritaEkrani() {
   const [loading, setLoading] = useState(false);
   const [mapStyle, setMapStyle] = useState("terrain");
 
-  const filter = () => {
-    return;
-  };
-
   useEffect(() => {
     const ref = firebase.db.collection("tarla");
     const refZeminId = firebase.db.collectionGroup("etkinlik");

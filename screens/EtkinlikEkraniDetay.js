@@ -35,7 +35,7 @@ export default function etkinlikEkrani({ route }) {
   const [tarih, setTarih] = useState(
     etkinlik ? new Date(Number(etkinlik.id)) : new Date()
   );
-  // const [saat, setSaat] = useState(etkinlik ? etkinlik.saat : "08.00-10.00");
+  const [saat, setSaat] = useState(etkinlik ? etkinlik.saat : new Date());
   const [islem, setIslem] = useState(etkinlik ? etkinlik.islem : "ilaçlama");
   const [alan, setAlan] = useState(etkinlik ? etkinlik.ilaclananalan : 0);
   const [plan, setPlan] = useState(etkinlik ? etkinlik.plan : "Planlandı");
@@ -77,9 +77,7 @@ export default function etkinlikEkrani({ route }) {
       .doc(`${zeminId}`)
       .collection("etkinlik")
       .doc(
-        route.params.etkinlikId
-          ? route.params.etkinlikId
-          : `${tarih}-${saat}-${zeminId}`
+        route.params.etkinlikId ? route.params.etkinlikId : `${tarih.getTime()}`
       )
       .set(data)
       .then(function () {
@@ -111,8 +109,8 @@ export default function etkinlikEkrani({ route }) {
             onPress={() =>
               eklentiYaz(route.params.zeminId, {
                 zeminId: route.params.zeminId,
-                id: route.param.etkinlikId
-                  ? route.param.etkinlikId
+                id: route.params.etkinlikId
+                  ? route.params.etkinlikId
                   : `${tarih.getTime()}`,
                 TimeStamp: tarih,
                 tarih: `${tarih.toISOString().split("T")[0]}`,
@@ -124,6 +122,7 @@ export default function etkinlikEkrani({ route }) {
                 ilaclananalan: alan,
                 plan: plan,
                 medya: medya,
+                coordinates: route.params.coordinates,
               })
             }
           />

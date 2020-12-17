@@ -16,7 +16,12 @@ export default function TasinmazSecEkrani({ navigation }) {
   const Item = ({ zeminId, item }) => (
     <TouchableOpacity
       key={zeminId}
-      onPress={() => navigation.navigate("Etkinlik Sec", { zeminId: zeminId })}
+      onPress={() =>
+        navigation.navigate("Etkinlik Sec", {
+          zeminId: zeminId,
+          coordinates: item.coordinates,
+        })
+      }
     >
       <View style={styles.screen}>
         <View style={styles.summary}>
