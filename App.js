@@ -31,15 +31,13 @@ export default function App() {
               let iconName;
 
               if (route.name === "Taşınmaz Ekle") {
-                iconName = focused ? "ios-map" : "ios-map-outline";
+                iconName = focused ? "ios-location" : "ios-location-outline";
               } else if (route.name === "Etkinlik Ekle") {
                 iconName = focused
                   ? "ios-add-circle"
                   : "ios-add-circle-outline";
               } else if (route.name === "Plan Sayfası") {
-                iconName = focused
-                  ? "ios-notifications-circle-sharp"
-                  : "ios-notifications-circle-outline";
+                iconName = focused ? "ios-bookmarks" : "ios-bookmarks-outline";
               } else if (route.name === "Harita Sayfası") {
                 iconName = focused ? "ios-map" : "ios-map-outline";
               }
