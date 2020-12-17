@@ -12,7 +12,10 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import firebase from "../firebase/index";
+import InputSpinner from "react-native-input-spinner";
 
 const { width, height } = Dimensions.get("window");
 // const Item = ({ zeminId }) => (
@@ -29,14 +32,42 @@ const { width, height } = Dimensions.get("window");
 export default function etkinlikEkrani({ route }) {
   const etkinlik = route.params.etkinlikItem;
   const [loading, setLoading] = useState(false);
-  const [tarih, setTarih] = useState(etkinlik ? etkinlik.tarih : "01-01-2021");
-  const [saat, setSaat] = useState(etkinlik ? etkinlik.saat : "08.00-10.00");
+  const [tarih, setTarih] = useState(
+    etkinlik ? new Date(Number(etkinlik.id)) : new Date()
+  );
+  // const [saat, setSaat] = useState(etkinlik ? etkinlik.saat : "08.00-10.00");
   const [islem, setIslem] = useState(etkinlik ? etkinlik.islem : "ilaçlama");
-  const [alan, setAlan] = useState(etkinlik ? etkinlik.ilaclananalan : "");
+  const [alan, setAlan] = useState(etkinlik ? etkinlik.ilaclananalan : 0);
   const [plan, setPlan] = useState(etkinlik ? etkinlik.plan : "Planlandı");
   const [medya, setMedya] = useState(
     etkinlik ? etkinlik.medya : "https://www.youtube.com/watch?v=94425VHLPFk"
   );
+
+  //const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("");
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || tarih;
+    setShow(Platform.OS === "ios");
+    setTarih(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
+  const showTimepicker = () => {
+    showMode("time");
+  };
+  const dateUTCConverter = (date) => {
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  };
 
   const renderItem = ({ item }) => <Item zeminId={item.zeminId} />;
 
@@ -45,7 +76,11 @@ export default function etkinlikEkrani({ route }) {
       .collection("tarla")
       .doc(`${zeminId}`)
       .collection("etkinlik")
-      .doc(`${tarih}-${saat}-${zeminId}`)
+      .doc(
+        route.params.etkinlikId
+          ? route.params.etkinlikId
+          : `${tarih}-${saat}-${zeminId}`
+      )
       .set(data)
       .then(function () {
         Alert.alert("Başarılı", "Etkinlik kaydı başarıyla gerçekleşti.");
@@ -68,64 +103,23 @@ export default function etkinlikEkrani({ route }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.containerUst}>
       <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder={`${route.params.zeminId}`}
-          editable={false}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="tarih"
-          value={tarih}
-          onChangeText={setTarih}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="saat aralığı"
-          value={saat}
-          onChangeText={setSaat}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="işlem türü"
-          value={islem}
-          onChangeText={setIslem}
-          keyboardType="default"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="ilaçlanan alan m2"
-          value={alan}
-          onChangeText={setAlan}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="planlandı/tamamlandı"
-          value={plan}
-          onChangeText={setPlan}
-          keyboardType="default"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="medya"
-          value={medya}
-          onChangeText={setMedya}
-          keyboardType="default"
-        />
         <View style={styles.button}>
           <Button
             title="Etkinlik Ekle"
             onPress={() =>
               eklentiYaz(route.params.zeminId, {
-                id: `${tarih}-${saat}-${route.params.zeminId}`,
-                tarih: tarih,
-                saat: saat,
+                zeminId: route.params.zeminId,
+                id: route.param.etkinlikId
+                  ? route.param.etkinlikId
+                  : `${tarih.getTime()}`,
+                TimeStamp: tarih,
+                tarih: `${tarih.toISOString().split("T")[0]}`,
+                saat: `${dateUTCConverter(tarih)
+                  .toISOString()
+                  .split("T")[1]
+                  .slice(0, 5)}`,
                 islem: islem,
                 ilaclananalan: alan,
                 plan: plan,
@@ -135,19 +129,126 @@ export default function etkinlikEkrani({ route }) {
           />
         </View>
 
-        <StatusBar style="auto" />
+        <TextInput
+          style={styles.input}
+          placeholder={`${route.params.zeminId}`}
+          editable={false}
+          keyboardType="numeric"
+          fontSize={26}
+          backgroundColor="lightgrey"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="medya"
+          value={medya}
+          onChangeText={setMedya}
+          keyboardType="default"
+        />
+        <View style={styles.buttonContainer}>
+          <View style={styles.buttonDate}>
+            <Button onPress={showDatepicker} title="Tarih Seç!" color="green" />
+          </View>
+          <View style={styles.buttonDate}>
+            <Button onPress={showTimepicker} title="Saat Seç!" color="green" />
+          </View>
+          <TextInput
+            style={{ ...styles.input, width: width - 250 }}
+            placeholder="tarih"
+            value={`${tarih.toISOString().split("T")[0]}  ${dateUTCConverter(
+              tarih
+            )
+              .toISOString()
+              .split("T")[1]
+              .slice(0, 5)}`}
+            editable={false}
+            onChangeText={setTarih}
+            keyboardType="numeric"
+            fontSize={16}
+            backgroundColor="lightgrey"
+          />
+        </View>
+
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={tarih}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+          />
+        )}
+        <Picker
+          selectedValue={islem}
+          style={{
+            width: width - 40,
+            height: 20,
+            //alignSelf: "flex-start",
+            flex: 1,
+          }}
+          mode="dropdown"
+          onValueChange={(itemValue, itemIndex) => setIslem(itemValue)}
+        >
+          <Picker.Item label="Süne İlaçlama" value="Süne İlaçlama" />
+          <Picker.Item label="Kanola İlaçlama" value="Kanola İlaçlama" />
+          <Picker.Item label="Mantar İlaçlama" value="Mantar İlaçlama" />
+          <Picker.Item label="Sinek İlaçlama" value="Sinek İlaçlama" />
+          <Picker.Item label="Mısır İlaçlama" value="Mısır İlaçlama" />
+          <Picker.Item label="Soğan İlaçlama" value="Soğan İlaçlama" />
+        </Picker>
+        <InputSpinner
+          max={1000000}
+          min={0}
+          step={10000}
+          colorMax={"#f04048"}
+          colorMin={"#40c5f4"}
+          value={alan}
+          fontSize={20}
+          width={width - 40}
+          onChange={(num) => {
+            setAlan(num);
+          }}
+        />
+        <Picker
+          selectedValue={plan}
+          style={{
+            width: width - 40,
+            height: 20,
+            // alignSelf: "flex-start",
+            flex: 1,
+          }}
+          mode="dropdown"
+          onValueChange={(itemValue, itemIndex) => setPlan(itemValue)}
+        >
+          <Picker.Item label="Planlandı" value="Planlandı" />
+          <Picker.Item label="Tamamlandı" value="Tamamlandı" />
+        </Picker>
+        {/* <StatusBar style="auto" /> */}
       </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
+  containerUst: {
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 30,
+    alignItems: "baseline",
+    justifyContent: "flex-start",
+    padding: 10,
+  },
+
+  container: {
+    backgroundColor: "#fff",
+    // alignItems: "baseline",
+    justifyContent: "flex-start",
+    padding: 10,
+  },
+  containeralt: {
+    backgroundColor: "#fff",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    padding: 10,
+    // marginTop: 20,
+    //paddingTop: 30,
   },
   item: {
     backgroundColor: "green",
@@ -164,7 +265,7 @@ const styles = StyleSheet.create({
   },
   horizontal: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     padding: 10,
   },
   input: {
@@ -177,10 +278,23 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 1,
     borderColor: "grey",
+    fontSize: 20,
+  },
+  picker: {
+    width: width,
+    height: 20,
   },
   button: {
     margin: 10,
     width: width - 50,
     color: "red",
+  },
+  buttonDate: {
+    margin: 10,
+    width: 80,
+    color: "red",
+  },
+  buttonContainer: {
+    flexDirection: "row",
   },
 });

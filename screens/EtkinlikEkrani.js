@@ -13,29 +13,13 @@ import {
 import firebase from "../firebase/index";
 
 export default function etkinlikEkrani({ route, navigation }) {
-  // const Item = ({ item }) => (
-  //   <TouchableOpacity
-  //     key={item.id}
-  //     onPress={() =>
-  //       navigation.navigate("Etkinlik Detay", {
-  //         etkinlikItem: item,
-  //         zeminId: route.params.zeminId,
-  //       })
-  //     }
-  //   >
-  //     <View style={styles.item} key={item.id}>
-  //       <Text key={item.id} style={styles.title}>
-  //         {item.id}
-  //       </Text>
-  //     </View>
-  //   </TouchableOpacity>
-  // );
   const Item = ({ item }) => (
     <TouchableOpacity
-      key={item}
+      key={item.id}
       onPress={() =>
         navigation.navigate("Etkinlik Detay", {
           zeminId: route.params.zeminId,
+          etkinlikId: item.id,
           etkinlikItem: item,
         })
       }
