@@ -20,6 +20,7 @@ export default function TasinmazSecEkrani({ navigation }) {
         navigation.navigate("Etkinlik Sec", {
           zeminId: zeminId,
           coordinates: item.coordinates,
+          mahalleAd: item.mahalleAd,
         })
       }
     >

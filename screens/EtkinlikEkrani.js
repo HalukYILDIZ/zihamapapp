@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Button,
+  Linking,
 } from "react-native";
 import firebase from "../firebase/index";
 
@@ -22,6 +23,7 @@ export default function etkinlikEkrani({ route, navigation }) {
           etkinlikId: item.id,
           etkinlikItem: item,
           coordinates: route.params.coordinates,
+          mahalleAd: route.params.mahalleAd,
         })
       }
     >
@@ -61,13 +63,27 @@ export default function etkinlikEkrani({ route, navigation }) {
               </View>
               <Text style={styles.summaryText}>
                 Medya:
-                <Text style={styles.amount}>{item.medya ? "var" : "yok"}</Text>
+                {item.medya ? (
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => Linking.openURL(item.medya)}
+                  >
+                    medya aç
+                  </Text>
+                ) : (
+                  <Text style={styles.amount}>yok</Text>
+                )}
               </Text>
               <Text style={styles.summaryText}>
-                işlem: <Text style={styles.amount}>{item.islem}</Text>
+                Mahalle:{" "}
+                <Text style={styles.amount}>{route.params.mahalleAd}</Text>
               </Text>
               <Text style={styles.summaryText}>
-                planlandı/tamamlandı:
+                Planlandı:
                 <Text style={styles.amount}>{item.plan}</Text>
               </Text>
             </View>
@@ -118,6 +134,7 @@ export default function etkinlikEkrani({ route, navigation }) {
             navigation.navigate("Etkinlik Detay", {
               zeminId: route.params.zeminId,
               coordinates: route.params.coordinates,
+              mahalleAd: route.params.mahalleAd,
             })
           }
         />

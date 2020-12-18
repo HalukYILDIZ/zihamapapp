@@ -6,6 +6,7 @@ import {
   StatusBar,
   Button,
   Dimensions,
+  Linking,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Polygon } from "react-native-maps";
 const PlanCardItem = ({ item }) => {
@@ -52,10 +53,23 @@ const PlanCardItem = ({ item }) => {
             </View>
             <Text style={styles.summaryText}>
               Medya:
-              <Text style={styles.amount}>{item.medya ? "var" : "yok"}</Text>
+              {item.medya ? (
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color: "blue",
+                    textDecorationLine: "underline",
+                  }}
+                  onPress={() => Linking.openURL(item.medya)}
+                >
+                  medya aç
+                </Text>
+              ) : (
+                <Text style={styles.amount}>yok</Text>
+              )}
             </Text>
             <Text style={styles.summaryText}>
-              İşlem: <Text style={styles.amount}>{item.islem}</Text>
+              Mahalle: <Text style={styles.amount}>{item.mahalleAd}</Text>
             </Text>
             <Text style={styles.summaryText}>
               Planlandı:

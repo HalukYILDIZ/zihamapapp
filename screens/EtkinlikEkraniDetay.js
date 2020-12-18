@@ -123,6 +123,7 @@ export default function etkinlikEkrani({ route }) {
                 plan: plan,
                 medya: medya,
                 coordinates: route.params.coordinates,
+                mahalleAd: route.params.mahalleAd,
               })
             }
           />
