@@ -35,13 +35,13 @@ export default function etkinlikEkrani({ route }) {
   const [tarih, setTarih] = useState(
     etkinlik ? new Date(Number(etkinlik.id)) : new Date()
   );
-  const [saat, setSaat] = useState(etkinlik ? etkinlik.saat : new Date());
-  const [islem, setIslem] = useState(etkinlik ? etkinlik.islem : "ilaçlama");
+  //const [saat, setSaat] = useState(etkinlik ? etkinlik.saat : new Date());
+  const [islem, setIslem] = useState(
+    etkinlik ? etkinlik.islem : "Süne İlaçlama"
+  );
   const [alan, setAlan] = useState(etkinlik ? etkinlik.ilaclananalan : 0);
   const [plan, setPlan] = useState(etkinlik ? etkinlik.plan : "Planlandı");
-  const [medya, setMedya] = useState(
-    etkinlik ? etkinlik.medya : "https://www.youtube.com/watch?v=94425VHLPFk"
-  );
+  const [medya, setMedya] = useState(etkinlik ? etkinlik.medya : "");
 
   //const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("");
@@ -189,6 +189,7 @@ export default function etkinlikEkrani({ route }) {
           mode="dropdown"
           onValueChange={(itemValue, itemIndex) => setIslem(itemValue)}
         >
+          <Picker.Item label="İlaçlama" value="İlaçlama" />
           <Picker.Item label="Süne İlaçlama" value="Süne İlaçlama" />
           <Picker.Item label="Kanola İlaçlama" value="Kanola İlaçlama" />
           <Picker.Item label="Mantar İlaçlama" value="Mantar İlaçlama" />
