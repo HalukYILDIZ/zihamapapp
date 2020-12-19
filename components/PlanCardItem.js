@@ -69,6 +69,23 @@ const PlanCardItem = ({ item }) => {
               )}
             </Text>
             <Text style={styles.summaryText}>
+              Video:
+              {item.video ? (
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color: "green",
+                    textDecorationLine: "underline",
+                  }}
+                  onPress={() => Linking.openURL(item.video)}
+                >
+                  video aç
+                </Text>
+              ) : (
+                <Text style={styles.amount}>yok</Text>
+              )}
+            </Text>
+            <Text style={styles.summaryText}>
               Mahalle: <Text style={styles.amount}>{item.mahalleAd}</Text>
             </Text>
             <Text style={styles.summaryText}>

@@ -42,6 +42,7 @@ export default function etkinlikEkrani({ route }) {
   const [alan, setAlan] = useState(etkinlik ? etkinlik.ilaclananalan : 0);
   const [plan, setPlan] = useState(etkinlik ? etkinlik.plan : "Planlandı");
   const [medya, setMedya] = useState(etkinlik ? etkinlik.medya : "");
+  const [video, setVideo] = useState(etkinlik ? etkinlik.video : "");
 
   //const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("");
@@ -122,6 +123,7 @@ export default function etkinlikEkrani({ route }) {
                 ilaclananalan: alan,
                 plan: plan,
                 medya: medya,
+                video: video,
                 coordinates: route.params.coordinates,
                 mahalleAd: route.params.mahalleAd,
               })
@@ -142,6 +144,13 @@ export default function etkinlikEkrani({ route }) {
           placeholder="medya"
           value={medya}
           onChangeText={setMedya}
+          keyboardType="default"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="video"
+          value={video}
+          onChangeText={setVideo}
           keyboardType="default"
         />
         <View style={styles.buttonContainer}>
