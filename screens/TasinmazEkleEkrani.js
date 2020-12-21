@@ -1,5 +1,4 @@
 // @refresh reset
-import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 //import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -9,11 +8,14 @@ import {
   View,
   Dimensions,
   Alert,
+  StatusBar,
 } from "react-native";
-import firebase from "../firebase/index";
-//import * as firebase from "firebase";
-//import "firebase/firestore";
-import Auth from "./AuthScreen";
+import { useSelector } from "react-redux";
+import { useFirestoreConnect } from "react-redux-firebase";
+//import firebase from "../firebase/index";
+import * as firebase from "firebase";
+import "firebase/firestore";
+//import Auth from "./AuthScreen";
 
 //const Stack = createStackNavigator();
 
@@ -35,7 +37,8 @@ export default function TasinmazEkleEkrani({ route }) {
       aciklama: aciklama,
       telefon: tel,
     };
-    firebase.db
+    firebase
+      .firestore() //firebase.db
       .collection("tarla")
       .doc(id)
       .set(eklenmisVeri)
@@ -113,7 +116,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    padding: 30,
+    // padding: 30,
+    marginTop: 0,
   },
   input: {
     marginTop: 10,

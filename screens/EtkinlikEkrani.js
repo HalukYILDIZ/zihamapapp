@@ -11,9 +11,23 @@ import {
   Button,
   Linking,
 } from "react-native";
-import firebase from "../firebase/index";
+import { useSelector } from "react-redux";
+import { useFirestoreConnect, isLoaded } from "react-redux-firebase";
+//import firebase from "../firebase/index";
 
 export default function etkinlikEkrani({ route, navigation }) {
+  useFirestoreConnect([
+    {
+      collection: "tarla",
+      doc: `${route.params.zeminId}`,
+      subcollections: [{ collection: "etkinlik" }],
+      storeAs: "tarlaetkinlik",
+    },
+  ]);
+  const etkinlikler = useSelector(
+    (state) => state.firestore.ordered.tarlaetkinlik
+  );
+
   const Item = ({ item }) => (
     <TouchableOpacity
       key={item.id}
@@ -110,31 +124,9 @@ export default function etkinlikEkrani({ route, navigation }) {
     </TouchableOpacity>
   );
 
-  const [loading, setLoading] = useState(false);
-  const [tableDatas, setTableDatas] = useState(false);
-
   const renderItem = ({ item }) => <Item key={item.id} item={item} />;
 
-  useEffect(() => {
-    const ref = firebase.db
-      .collection("tarla")
-      .doc(`${route.params.zeminId}`)
-      .collection("etkinlik");
-    const getTableDatas = () => {
-      setLoading(true);
-      ref.onSnapshot((querySnapshot) => {
-        const items = [];
-        querySnapshot.forEach((doc) => {
-          items.push(doc.data());
-        });
-        setTableDatas(items);
-        setLoading(false);
-      });
-    };
-    getTableDatas();
-  }, []);
-
-  if (loading) {
+  if (!isLoaded) {
     return (
       <View style={[styles.containeri, styles.horizontal]}>
         <ActivityIndicator size="large" color="#00ff00" />
@@ -157,7 +149,7 @@ export default function etkinlikEkrani({ route, navigation }) {
         />
       </View>
       <FlatList
-        data={tableDatas}
+        data={etkinlikler}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />

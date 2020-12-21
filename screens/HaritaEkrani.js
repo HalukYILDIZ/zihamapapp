@@ -134,25 +134,6 @@ export default function HaritaEkrani() {
         }}
         style={styles.map}
       >
-        {/* <Polygon
-          key={"1"}
-          coordinates={[
-            { latitude: 39.8, longitude: 32.8 },
-            { latitude: 50.8, longitude: 22.8 },
-            { latitude: 22.8, longitude: 40.8 },
-          ]}
-          strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
-          strokeColors={[
-            "#7F0000",
-            "#00000000", // no color, creates a "long" gradient between the previous and next coordinate
-            "#B24112",
-            "#E5845C",
-            "#238C23",
-            "#7F0000",
-          ]}
-          fillColor="rgba(250,150,150,0.5)"
-          strokeWidth={1}
-        /> */}
         {tableDatas.map(
           (tarla) =>
             mapId.includes(Number(tarla.zeminId)) && (

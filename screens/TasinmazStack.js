@@ -3,7 +3,7 @@ import { Button } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import TasinmazEkleEkrani from "./TasinmazEkleEkrani";
-import TasinmazGuncelleDetayEkrani from "./TasinmazGuncelleDetayEkrani";
+//import TasinmazGuncelleDetayEkrani from "./TasinmazGuncelleDetayEkrani";
 
 import TasinmazGüncelleEkrani from "./TasinmazGüncelleEkrani";
 const Stack = createStackNavigator();
@@ -25,39 +25,12 @@ export default function TasinmazStack({ navigation }) {
                 })
               }
               title="Yeni Kayıt"
-              color="blue"
+              color="green"
             />
           ),
         }}
       />
-      <Stack.Screen
-        name="Tasınmaz Ekle"
-        component={TasinmazEkleEkrani}
-        // options={{
-        //   // headerTitle: (props) => <LogoTitle {...props} />,
-        //   headerRight: () => (
-        //     <Button
-        //       onPress={() => navigation.navigate("EtkinlikDetay")}
-        //       title="Yeni Kayıt Ekle"
-        //       color="red"
-        //     />
-        //   ),
-        // }}
-      />
-      {/* <Stack.Screen
-        name="Tasınmaz Guncelleme Sayfası"
-        component={TasinmazGuncelleDetayEkrani}
-        // options={{
-        //   // headerTitle: (props) => <LogoTitle {...props} />,
-        //   headerRight: () => (
-        //     <Button
-        //       onPress={() => navigation.navigate("EtkinlikDetay")}
-        //       title="Yeni Kayıt Ekle"
-        //       color="red"
-        //     />
-        //   ),
-        // }}
-      /> */}
+      <Stack.Screen name="Tasınmaz Ekle" component={TasinmazEkleEkrani} />
     </Stack.Navigator>
   );
 }
