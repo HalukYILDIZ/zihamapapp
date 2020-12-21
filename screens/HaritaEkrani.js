@@ -1,6 +1,19 @@
 import React, { useRef, useState, useEffect } from "react";
-import { StyleSheet, Text, View, Dimensions, Button } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Polygon } from "react-native-maps";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Alert,
+  Button,
+} from "react-native";
+import MapView, {
+  PROVIDER_GOOGLE,
+  Polygon,
+  Marker,
+  Callout,
+  CalloutSubview,
+} from "react-native-maps";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import CustomActionButton from "../components/CustomActionButton";
 import firebase from "../firebase/index";
@@ -67,13 +80,26 @@ export default function HaritaEkrani() {
         });
         setTableDatas(
           items.map(
-            ({ zeminId, mahalleAd, adaNo, parselNo, coordinates, alan }) => {
+            ({
+              zeminId,
+              mahalleAd,
+              adaNo,
+              parselNo,
+              coordinates,
+              alan,
+              tasinmazsahibi,
+              aciklama,
+              telefon,
+            }) => {
               return {
                 mahalleAd: mahalleAd,
                 adaNo: adaNo,
                 parselNo: parselNo,
                 zeminId: zeminId,
                 alan: alan,
+                tasinmazsahibi: tasinmazsahibi,
+                telefon: telefon,
+                aciklama,
                 coordinates: coordinates.map(({ lat, lng }) => {
                   return { latitude: lat, longitude: lng };
                 }),
@@ -137,21 +163,57 @@ export default function HaritaEkrani() {
         {tableDatas.map(
           (tarla) =>
             mapId.includes(Number(tarla.zeminId)) && (
-              <Polygon
-                key={tarla.zeminId}
-                coordinates={tarla.coordinates}
-                strokeColor="green" // fallback for when `strokeColors` is not supported by the map-provider
-                strokeColors={[
-                  "#7F0000",
-                  "#00000000", // no color, creates a "long" gradient between the previous and next coordinate
-                  "#B24112",
-                  "#E5845C",
-                  "#238C23",
-                  "#7F0000",
-                ]}
-                fillColor="rgba(175,245,66,0.4)"
-                strokeWidth={1}
-              />
+              <>
+                <Polygon
+                  key={tarla.zeminId}
+                  coordinates={tarla.coordinates}
+                  strokeColor="green" // fallback for when `strokeColors` is not supported by the map-provider
+                  strokeColors={[
+                    "#7F0000",
+                    "#00000000", // no color, creates a "long" gradient between the previous and next coordinate
+                    "#B24112",
+                    "#E5845C",
+                    "#238C23",
+                    "#7F0000",
+                  ]}
+                  fillColor="rgba(175,245,66,0.4)"
+                  strokeWidth={1}
+                />
+                <Marker coordinate={tarla.coordinates[0]}>
+                  <Callout
+                    alphaHitTest
+                    onPress={(e) => {
+                      if (
+                        e.nativeEvent.action ===
+                          "marker-inside-overlay-press" ||
+                        e.nativeEvent.action === "callout-inside-press"
+                      ) {
+                        return;
+                      }
+
+                      Alert.alert(
+                        `Taşınmaz Sahibi:${tarla.tasinmazsahibi}, Tel:${tarla.telefon}, Açıklama:${tarla.aciklama} `
+                      );
+                    }}
+                    style={styles.bubble}
+                  >
+                    <View>
+                      <Text>{tarla.zeminId}</Text>
+                    </View>
+                    <View>
+                      <Text>Mahalle:{tarla.mahalleAd}</Text>
+                    </View>
+                    <View>
+                      <Text>
+                        Ada:{tarla.adaNo}/Parsel:{tarla.parselNo}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text>Alan:{tarla.alan}</Text>
+                    </View>
+                  </Callout>
+                </Marker>
+              </>
             )
         )}
       </MapView>
@@ -178,6 +240,13 @@ export default function HaritaEkrani() {
 }
 
 const styles = StyleSheet.create({
+  bubble: {
+    flex: 1,
+    backgroundColor: "rgba(255,255,255,0.7)",
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -187,5 +256,9 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height - 50,
+  },
+  customView: {
+    width: 140,
+    height: 140,
   },
 });
