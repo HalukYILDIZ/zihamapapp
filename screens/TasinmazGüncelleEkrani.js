@@ -112,7 +112,7 @@ export default function TasinmazGuncelleEkrani({ navigation }) {
       <FlatList
         data={tableDatas}
         renderItem={renderItem}
-        keyExtractor={(item) => item.pafta}
+        keyExtractor={(item) => `${item.zeminId}`}
       />
     </SafeAreaView>
   );

@@ -113,7 +113,7 @@ export default function TasinmazSecEkrani({ navigation }) {
       <FlatList
         data={tableDatas}
         renderItem={renderItem}
-        keyExtractor={(item) => item.pafta}
+        keyExtractor={(item) => `${item.zeminId}`}
       />
     </SafeAreaView>
   );
