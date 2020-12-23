@@ -1,18 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Alert,
-  Button,
-} from "react-native";
+import { StyleSheet, Text, View, Dimensions, Alert } from "react-native";
 import MapView, {
   PROVIDER_GOOGLE,
   Polygon,
   Marker,
   Callout,
-  CalloutSubview,
 } from "react-native-maps";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import CustomActionButton from "../components/CustomActionButton";

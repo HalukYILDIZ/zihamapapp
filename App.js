@@ -21,6 +21,7 @@ import TasinmazStack from "./screens/TasinmazStack";
 import EtkinlikStack from "./screens/EtkinlikStack";
 import PlanEkrani from "./screens/PlanEkrani";
 import HaritaEkrani from "./screens/HaritaEkrani";
+import TakvimEkrani from "./screens/TakvimEkrani";
 import { Ionicons } from "@expo/vector-icons";
 
 //import tarlaReducer from './store/reducers/tarla';
@@ -85,6 +86,10 @@ export default function App() {
                       : "ios-bookmarks-outline";
                   } else if (route.name === "Harita Sayfası") {
                     iconName = focused ? "ios-map" : "ios-map-outline";
+                  } else if (route.name === "Takvim Sayfası") {
+                    iconName = focused
+                      ? "ios-calendar"
+                      : "ios-calendar-outline";
                   }
 
                   // You can return any component that you like here!
@@ -100,6 +105,7 @@ export default function App() {
               <Tab.Screen name="Taşınmaz Ekle" component={TasinmazStack} />
               <Tab.Screen name="Etkinlik Ekle" component={EtkinlikStack} />
               <Tab.Screen name="Plan Sayfası" component={PlanEkrani} />
+              <Tab.Screen name="Takvim Sayfası" component={TakvimEkrani} />
             </Tab.Navigator>
           </NavigationContainer>
         </ActionSheetProvider>

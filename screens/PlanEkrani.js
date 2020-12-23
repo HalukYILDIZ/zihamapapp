@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   SafeAreaView,
   View,
@@ -19,7 +19,7 @@ export default function PlanEkrani() {
     {
       collectionGroup: "etkinlik",
       storeAs: "etkinlik",
-      orderBy: [["plan"], ["tarih"]],
+      orderBy: [["plan"], ["tarih"], ["saat"]],
     },
   ]);
   const etkinlikler = useSelector((state) => state.firestore.ordered.etkinlik);
@@ -71,7 +71,7 @@ export default function PlanEkrani() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: StatusBar.currentHeight || 0,
+    marginTop: StatusBar.currentHeight || 0,
   },
   item: {
     backgroundColor: "green",
