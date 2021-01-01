@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  ActivityIndicator,
   TextInput,
   TouchableOpacity,
 } from "react-native";
@@ -119,6 +120,13 @@ export default function TasinmazSecEkrani({ navigation }) {
   );
 
   if (!isLoaded) {
+    return (
+      <View style={[styles.containeri, styles.horizontal]}>
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
+  }
+  if (!isLoaded(tarlalar)) {
     return (
       <View style={[styles.containeri, styles.horizontal]}>
         <ActivityIndicator size="large" color="#00ff00" />
