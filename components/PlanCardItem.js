@@ -9,7 +9,7 @@ import {
   Linking,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Polygon } from "react-native-maps";
-const PlanCardItem = ({ item }) => {
+const PlanCardItem = ({ item, onPress }) => {
   const [openMap, setOpenMap] = useState(false);
   return (
     <View style={styles.screen}>
@@ -97,13 +97,34 @@ const PlanCardItem = ({ item }) => {
               <Text style={styles.amount}>{item.zeminId}</Text>
             </Text>
           </View>
-          <View style={{ alignSelf: "center", margin: 20 }}>
-            <Button
-              title="Harita Göster"
-              onPress={() => {
-                setOpenMap(!openMap);
+          <View
+            style={{ alignSelf: "center", flexDirection: "column", margin: 10 }}
+          >
+            <View
+              style={{
+                alignSelf: "center",
+                width: 200,
+                margin: 5,
+                flex: 1,
               }}
-            />
+            >
+              <Button
+                title="Harita Göster"
+                onPress={() => {
+                  setOpenMap(!openMap);
+                }}
+              />
+            </View>
+            <View
+              style={{
+                alignSelf: "center",
+                width: 200,
+                margin: 5,
+                flex: 1,
+              }}
+            >
+              <Button title="Bilgi Güncelle" onPress={onPress} color="red" />
+            </View>
           </View>
         </View>
         {openMap && (

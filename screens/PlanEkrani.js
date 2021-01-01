@@ -6,6 +6,7 @@ import {
   StyleSheet,
   StatusBar,
   ActivityIndicator,
+  TouchableOpacity,
   Dimensions,
   TextInput,
 } from "react-native";
@@ -16,12 +17,9 @@ import { useSelector } from "react-redux";
 import { useFirestoreConnect, isLoaded } from "react-redux-firebase";
 import filter from "lodash.filter";
 
-export default function PlanEkrani() {
+export default function PlanEkrani({ navigation }) {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
-  useEffect(() => {
-    setData(etkinlikler);
-  }, [etkinlikler]);
 
   useFirestoreConnect([
     {
@@ -54,6 +52,9 @@ export default function PlanEkrani() {
 
     return false;
   };
+  useEffect(() => {
+    setData(etkinlikler);
+  }, [etkinlikler]);
 
   // console.log(etkinlikler);
 
@@ -63,7 +64,34 @@ export default function PlanEkrani() {
   // const [tableDatas, setTableDatas] = useState(false);
   // const [openMap, setOpenMap] = useState(false);
 
-  const renderItem = ({ item }) => <PlanCardItem key={item.id} item={item} />;
+  const renderItem = ({ item }) => (
+    // <TouchableOpacity
+    //   key={item.id}
+    //   onPress={() =>
+    //     navigation.navigate("Etkinlik Detay", {
+    //       zeminId: item.zeminId,
+    //       etkinlikId: item.id,
+    //       etkinlikItem: item,
+    //       coordinates: item.coordinates,
+    //       mahalleAd: item.mahalleAd,
+    //     })
+    //   }
+    // >
+    <PlanCardItem
+      key={item.id}
+      item={item}
+      onPress={() =>
+        navigation.navigate("Etkinlik Detay", {
+          zeminId: item.zeminId,
+          etkinlikId: item.id,
+          etkinlikItem: item,
+          coordinates: item.coordinates,
+          mahalleAd: item.mahalleAd,
+        })
+      }
+    />
+    // </TouchableOpacity>
+  );
 
   // useEffect(() => {
   //   const ref = firebase.db.collectionGroup("etkinlik").orderBy("plan");

@@ -119,13 +119,6 @@ export default function TasinmazSecEkrani({ navigation }) {
     <Item key={item.zeminId} zeminId={item.zeminId} item={item} />
   );
 
-  if (!isLoaded) {
-    return (
-      <View style={[styles.containeri, styles.horizontal]}>
-        <ActivityIndicator size="large" color="#00ff00" />
-      </View>
-    );
-  }
   if (!isLoaded(tarlalar)) {
     return (
       <View style={[styles.containeri, styles.horizontal]}>

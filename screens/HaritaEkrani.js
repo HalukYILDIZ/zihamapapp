@@ -105,6 +105,7 @@ export default function HaritaEkrani() {
     };
     getTableDatas();
     getZeminId();
+    setMapId(tumalanlar);
   }, []);
 
   const onMapChooseHandler = () => {
@@ -114,7 +115,8 @@ export default function HaritaEkrani() {
           "Cancel",
           "Planlanan Alanlar",
           "Tamamlanan Alanlar",
-          "Tüm ALanlar",
+          "Tüm Alanlar",
+          "Temizle",
         ],
         destructiveButtonIndex: 0,
         cancelButtonIndex: 0,
@@ -128,6 +130,8 @@ export default function HaritaEkrani() {
           setMapId(tamamlandi);
         } else if (buttonIndex === 3) {
           setMapId(tumalanlar);
+        } else if (buttonIndex === 4) {
+          setMapId([]);
         }
       }
     );

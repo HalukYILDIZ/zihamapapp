@@ -19,7 +19,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import TasinmazStack from "./screens/TasinmazStack";
 import EtkinlikStack from "./screens/EtkinlikStack";
-import PlanEkrani from "./screens/PlanEkrani";
+import PlanStack from "./screens/PlanStack";
+//import PlanEkrani from "./screens/PlanEkrani";
 import HaritaEkrani from "./screens/HaritaEkrani";
 import TakvimEkrani from "./screens/TakvimEkrani";
 import { Ionicons } from "@expo/vector-icons";
@@ -104,7 +105,7 @@ export default function App() {
               <Tab.Screen name="Harita Sayfası" component={HaritaEkrani} />
               <Tab.Screen name="Taşınmaz Ekle" component={TasinmazStack} />
               <Tab.Screen name="Etkinlik Ekle" component={EtkinlikStack} />
-              <Tab.Screen name="Plan Sayfası" component={PlanEkrani} />
+              <Tab.Screen name="Plan Sayfası" component={PlanStack} />
               <Tab.Screen name="Takvim Sayfası" component={TakvimEkrani} />
             </Tab.Navigator>
           </NavigationContainer>
