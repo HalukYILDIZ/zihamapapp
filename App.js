@@ -1,115 +1,130 @@
-import React from "react";
-import firebase from "firebase/app";
+// @refresh reset
+import { StatusBar } from "expo-status-bar";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, TextInput, Button, View, Dimensions } from "react-native";
+import * as firebase from "firebase";
 import "firebase/firestore";
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
-import ReduxThunk from "redux-thunk";
-import {
-  getFirebase,
-  ReactReduxFirebaseProvider,
-  firebaseReducer,
-} from "react-redux-firebase";
-import { firestoreReducer, createFirestoreInstance } from "redux-firestore";
+const { width, height } = Dimensions.get("window");
+import App from "./App2";
 
-//import { AppLoading } from "expo";
+export default function AuthScreen() {
+  const [email, setEmail] = useState("zihatim06@gmail.com");
+  const [pass, setPass] = useState("Ankarada06");
 
-//import firebase from "./firebase/index";
-import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TasinmazStack from "./screens/TasinmazStack";
-import EtkinlikStack from "./screens/EtkinlikStack";
-import PlanStack from "./screens/PlanStack";
-//import PlanEkrani from "./screens/PlanEkrani";
-import HaritaEkrani from "./screens/HaritaEkrani";
-import TakvimEkrani from "./screens/TakvimEkrani";
-import { Ionicons } from "@expo/vector-icons";
+  const [login, setLogin] = useState(false);
 
-//import tarlaReducer from './store/reducers/tarla';
-//import etkinlikReducer from './store/reducers/etkinlik';
+  useEffect(() => {
+    var firebaseConfig = {
+      apiKey: "AIzaSyAAJcxKjP0D3v7cOwTKhZr_o9fl1PIotJk",
+      authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+      databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
+      projectId: "zihatim",
+      storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+      appId: process.env.REACT_APP_FIREBASE_APP_ID,
+      measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+    };
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    } else {
+      firebase.app(); // if already initialized, use that one
+    }
+    firebase.auth().onAuthStateChanged((auth) => {
+      if (auth) {
+        console.log("girildi");
+        // console.log(auth.email);
+        setLogin(true);
+      } else {
+        console.log("olmadı");
+        setLogin(false);
+      }
+    });
+  }, []);
 
-const rootReducer = combineReducers({
-  firebase: firebaseReducer,
-  firestore: firestoreReducer,
-});
+  const kayitol = () => {
+    console.log("kayıtol butonuna basıldı");
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, pass)
+      .then((user) => {
+        console.log("kayıtoldu");
+        // Signed in
+        console.log(user);
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
+  const girisyap = () => {
+    console.log("girisyap butonuna basıldı");
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, pass)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(ReduxThunk.withExtraArgument({ getFirebase }))
-);
-const rrfProps = {
-  firebase,
-  config: {},
-  dispatch: store.dispatch,
-  createFirestoreInstance,
-};
-if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: "AIzaSyAAJcxKjP0D3v7cOwTKhZr_o9fl1PIotJk",
-    authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
-    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
-    projectId: "zihatim",
-    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
-    appId: process.env.REACT_APP_FIREBASE_APP_ID,
-    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
-  });
-} else {
-  firebase.app();
-}
-firebase.firestore();
+  if (login) {
+    return <App />;
+  }
 
-const Tab = createBottomTabNavigator();
-
-export default function App() {
   return (
-    <Provider store={store}>
-      <ReactReduxFirebaseProvider {...rrfProps}>
-        <ActionSheetProvider>
-          <NavigationContainer>
-            <Tab.Navigator
-              screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="E-mail Adresi"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Şifre"
+        value={pass}
+        onChangeText={setPass}
+        secureTextEntry
+      />
+      <View style={styles.button}>
+        <Button title="Giriş Yap" onPress={girisyap} />
+      </View>
+      <View style={styles.button}>
+        <Button title="Kayıt Ol" onPress={kayitol} />
+      </View>
 
-                  if (route.name === "Taşınmaz Ekle") {
-                    iconName = focused
-                      ? "ios-location"
-                      : "ios-location-outline";
-                  } else if (route.name === "Etkinlik Ekle") {
-                    iconName = focused
-                      ? "ios-add-circle"
-                      : "ios-add-circle-outline";
-                  } else if (route.name === "Plan Sayfası") {
-                    iconName = focused
-                      ? "ios-bookmarks"
-                      : "ios-bookmarks-outline";
-                  } else if (route.name === "Harita Sayfası") {
-                    iconName = focused ? "ios-map" : "ios-map-outline";
-                  } else if (route.name === "Takvim Sayfası") {
-                    iconName = focused
-                      ? "ios-calendar"
-                      : "ios-calendar-outline";
-                  }
-
-                  // You can return any component that you like here!
-                  return <Ionicons name={iconName} size={size} color={color} />;
-                },
-              })}
-              tabBarOptions={{
-                activeTintColor: "blue",
-                inactiveTintColor: "gray",
-              }}
-            >
-              <Tab.Screen name="Harita Sayfası" component={HaritaEkrani} />
-              <Tab.Screen name="Taşınmaz Ekle" component={TasinmazStack} />
-              <Tab.Screen name="Etkinlik Ekle" component={EtkinlikStack} />
-              <Tab.Screen name="Plan Sayfası" component={PlanStack} />
-              <Tab.Screen name="Takvim Sayfası" component={TakvimEkrani} />
-            </Tab.Navigator>
-          </NavigationContainer>
-        </ActionSheetProvider>
-      </ReactReduxFirebaseProvider>
-    </Provider>
+      <StatusBar style="auto" />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 30,
+  },
+  input: {
+    marginTop: 10,
+    width: width - 40,
+    padding: 10,
+    fontSize: 12,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 4,
+    height: 50,
+    borderWidth: 1,
+    borderColor: "grey",
+  },
+  button: {
+    margin: 10,
+    width: width - 50,
+  },
+});

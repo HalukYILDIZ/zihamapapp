@@ -72,6 +72,21 @@ export default function etkinlikEkrani({ route }) {
 
   const renderItem = ({ item }) => <Item zeminId={item.zeminId} />;
 
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState("bilinmiyor");
+  function onAuthStateChanged(user) {
+    setUser(user.email);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = firebase.firebase
+      .auth()
+      .onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
+  }, []);
+
   const eklentiYaz = (zeminId, data) => {
     firebase.db
       .collection("tarla")
@@ -93,14 +108,17 @@ export default function etkinlikEkrani({ route }) {
   if (loading) {
     return (
       <View style={[styles.containeri, styles.horizontal]}>
-        <ActivityIndicator />
         <ActivityIndicator size="large" />
-        <ActivityIndicator size="small" color="#0000ff" />
-        <ActivityIndicator size="large" color="#00ff00" />
       </View>
     );
   }
-
+  if (initializing) {
+    return (
+      <View style={[styles.containeri, styles.horizontal]}>
+        <ActivityIndicator size="small" color="#0000ff" />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.containerUst}>
       <View style={styles.container}>
@@ -126,6 +144,7 @@ export default function etkinlikEkrani({ route }) {
                 video: video,
                 coordinates: route.params.coordinates,
                 mahalleAd: route.params.mahalleAd,
+                auth: user,
               })
             }
           />

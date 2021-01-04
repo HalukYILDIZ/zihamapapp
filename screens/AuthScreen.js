@@ -10,6 +10,8 @@ export default function AuthScreen() {
   const [email, setEmail] = useState("zihatim06@gmail.com");
   const [pass, setPass] = useState("Ankarada06");
 
+  const [login, setLogin] = useState(false);
+
   useEffect(() => {
     var firebaseConfig = {
       apiKey: "AIzaSyAAJcxKjP0D3v7cOwTKhZr_o9fl1PIotJk",
@@ -29,8 +31,10 @@ export default function AuthScreen() {
     firebase.auth().onAuthStateChanged((auth) => {
       if (auth) {
         console.log("girildi");
+        setLogin(true);
       } else {
         console.log("olmadı");
+        setLogin(false);
       }
     });
   }, []);
@@ -65,6 +69,14 @@ export default function AuthScreen() {
         console.log(errorMessage);
       });
   };
+
+  if (login) {
+    return (
+      <View style={styles.container}>
+        <Button>title="Giriş Yapıldı"</Button>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

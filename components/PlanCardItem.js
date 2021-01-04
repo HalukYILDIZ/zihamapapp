@@ -96,6 +96,9 @@ const PlanCardItem = ({ item, onPress }) => {
               zeminId:
               <Text style={styles.amount}>{item.zeminId}</Text>
             </Text>
+            <Text style={styles.summaryText}>
+              <Text style={styles.amount}>{`${item.auth}`.split("@")[0]}</Text>
+            </Text>
           </View>
           <View
             style={{ alignSelf: "center", flexDirection: "column", margin: 10 }}
@@ -103,7 +106,6 @@ const PlanCardItem = ({ item, onPress }) => {
             <View
               style={{
                 alignSelf: "center",
-                width: 200,
                 margin: 5,
                 flex: 1,
               }}
@@ -118,7 +120,6 @@ const PlanCardItem = ({ item, onPress }) => {
             <View
               style={{
                 alignSelf: "center",
-                width: 200,
                 margin: 5,
                 flex: 1,
               }}
