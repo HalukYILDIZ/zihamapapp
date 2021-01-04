@@ -5411,10 +5411,9 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-react-native-action-button@^2.8.5:
-  version "2.8.5"
-  resolved "https://registry.yarnpkg.com/react-native-action-button/-/react-native-action-button-2.8.5.tgz#4152a50323a8a6b3468e6f161f9a9071f2f0739a"
-  integrity sha512-BvGZpzuGeuFR2Y6j93+vKiSqDhsF87VHvNXFs/qEYKfzT4b1ASAT/GQbgS6gNt4jRJCUnJWYrIwlBzRjesZQmQ==
+"react-native-action-button@https://github.com/mastermoo/react-native-action-button":
+  version "2.9.0"
+  resolved "https://github.com/mastermoo/react-native-action-button#ad8c7e5d482296ab4f92aebcf9dcfd28481d7e15"
   dependencies:
     prop-types "^15.5.10"
 

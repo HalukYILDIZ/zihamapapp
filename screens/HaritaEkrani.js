@@ -159,7 +159,7 @@ export default function HaritaEkrani() {
         {tableDatas.map(
           (tarla) =>
             mapId.includes(Number(tarla.zeminId)) && (
-              <>
+              <React.Fragment key={`fragment-${tarla.zeminId}`}>
                 <Polygon
                   key={tarla.zeminId}
                   coordinates={tarla.coordinates}
@@ -175,8 +175,12 @@ export default function HaritaEkrani() {
                   fillColor="rgba(175,245,66,0.4)"
                   strokeWidth={1}
                 />
-                <Marker coordinate={tarla.coordinates[0]}>
+                <Marker
+                  coordinate={tarla.coordinates[0]}
+                  key={`marker-${tarla.zeminId}`}
+                >
                   <Callout
+                    key={`callout-${tarla.zeminId}`}
                     alphaHitTest
                     onPress={(e) => {
                       if (
@@ -209,7 +213,7 @@ export default function HaritaEkrani() {
                     </View>
                   </Callout>
                 </Marker>
-              </>
+              </React.Fragment>
             )
         )}
       </MapView>

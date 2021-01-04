@@ -2,13 +2,13 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyAAJcxKjP0D3v7cOwTKhZr_o9fl1PIotJk",
-  authDomain: "zihatim.firebaseapp.com",
-  databaseURL: "https://zihatim-default-rtdb.europe-west1.firebasedatabase.app",
+  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
   projectId: "zihatim",
-  storageBucket: "zihatim.appspot.com",
-  messagingSenderId: "302815205710",
-  appId: "1:302815205710:web:ee4b946cb97cdef721a61f",
-  measurementId: "G-M8B1QJ9DN6",
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 firebase.initializeApp(firebaseConfig);
 
