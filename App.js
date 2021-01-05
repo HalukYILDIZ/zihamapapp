@@ -1,7 +1,14 @@
 // @refresh reset
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TextInput, Button, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  Button,
+  View,
+  Dimensions,
+  Alert,
+} from "react-native";
 import * as firebase from "firebase";
 import "firebase/firestore";
 const { width, height } = Dimensions.get("window");
@@ -41,6 +48,20 @@ export default function AuthScreen() {
     });
   }, []);
 
+  const signOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        // Sign-out successful.
+        Alert.alert("Çıkış Başarılı", "Tekrar Giriş Yapın.");
+      })
+      .catch((error) => {
+        // An error happened.
+        Alert.alert("Çıkış Başarısız", "Çıkış yaparken bir hata oluştu.");
+      });
+  };
+
   const kayitol = () => {
     console.log("kayıtol butonuna basıldı");
     firebase
@@ -48,6 +69,7 @@ export default function AuthScreen() {
       .createUserWithEmailAndPassword(email, pass)
       .then((user) => {
         console.log("kayıtoldu");
+        Alert.alert("Kayıt Başarılı", "  Hoşgeldiniz.");
         // Signed in
         console.log(user);
       })
@@ -55,6 +77,7 @@ export default function AuthScreen() {
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log(errorMessage);
+        Alert.alert("Kayıt Başarısız", `${errorMessage}`);
       });
   };
   const girisyap = () => {
@@ -64,16 +87,18 @@ export default function AuthScreen() {
       .signInWithEmailAndPassword(email, pass)
       .then((user) => {
         console.log(user);
+        Alert.alert("Giriş Başarılı", `${email}`);
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
+        Alert.alert("Giriş Başarısız", `${errorMessage}`);
         console.log(errorMessage);
       });
   };
 
   if (login) {
-    return <App />;
+    return <App signOut={signOut} />;
   }
 
   return (

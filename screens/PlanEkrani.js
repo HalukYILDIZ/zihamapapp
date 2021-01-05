@@ -6,12 +6,12 @@ import {
   StyleSheet,
   StatusBar,
   ActivityIndicator,
-  TouchableOpacity,
+  //TouchableOpacity,
   Dimensions,
   TextInput,
 } from "react-native";
 //import MapView, { PROVIDER_GOOGLE, Polygon } from "react-native-maps";
-import firebase from "../firebase/index";
+//import firebase from "../firebase/index";
 import PlanCardItem from "../components/PlanCardItem";
 import { useSelector } from "react-redux";
 import { useFirestoreConnect, isLoaded } from "react-redux-firebase";

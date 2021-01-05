@@ -4,10 +4,7 @@ import {
   View,
   TextInput,
   StyleSheet,
-  Text,
-  StatusBar,
   ActivityIndicator,
-  TouchableOpacity,
   Button,
   Dimensions,
   Alert,
@@ -18,16 +15,6 @@ import firebase from "../firebase/index";
 import InputSpinner from "react-native-input-spinner";
 
 const { width, height } = Dimensions.get("window");
-// const Item = ({ zeminId }) => (
-//   <TouchableOpacity
-//     key={zeminId}
-//     onPress={() => navigation.navigate("EtkinlikDetay", { zeminId: zeminId })}
-//   >
-//     <View style={styles.item}>
-//       <Text style={styles.title}>{zeminId}</Text>
-//     </View>
-//   </TouchableOpacity>
-// );
 
 export default function etkinlikEkrani({ route }) {
   const etkinlik = route.params.etkinlikItem;
